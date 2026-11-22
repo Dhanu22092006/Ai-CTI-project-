@@ -1,0 +1,8 @@
+type,value,threat_category,confidence,severity,source,description,cve_references,mitre_techniques
+ip,185.220.101.5,Command and Control,94,CRITICAL,CSV Feed Import,Cobalt Strike C2 team server,CVE-2023-34362,T1071
+ip,194.26.29.112,Scanning & Exploitation,88,HIGH,CSV Feed Import,Citrix Bleed vulnerability scanning host,CVE-2023-4966,T1190
+domain,update-microsoft-auth.com,Phishing & C2,95,CRITICAL,CSV Feed Import,Adversary-in-the-middle phishing site,CVE-2024-21412,T1566
+sha256,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855,Malware Hash,98,CRITICAL,CSV Feed Import,Cobalt Strike beacon DLL payload,CVE-2023-34362,T1055
+cve,CVE-2023-34362,Vulnerability,98,CRITICAL,CSV Feed Import,MOVEit Transfer SQL Injection RCE,,T1190
+url,https://update-microsoft-auth.com/oauth2/v2.0/authorize,Credential Theft,92,HIGH,CSV Feed Import,OAuth token harvesting portal,CVE-2024-21412,T1566
+

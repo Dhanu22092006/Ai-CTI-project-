@@ -1,0 +1,27 @@
+THREAT INTELLIGENCE ADVISORY: OPERATION ARCTIC ECLIPSE
+Date: October 24, 2024
+Source: Global Cyber Defense Taskforce
+Classification: TLP:CLEAR / DEMO SIMULATION
+
+EXECUTIVE SUMMARY:
+Security researchers have uncovered a coordinated intrusion campaign orchestrated by threat actor APT29 (also tracked as Midnight Blizzard / Cozy Bear). The adversary leveraged critical vulnerabilities in Internet-facing enterprise software, specifically CVE-2023-34362 affecting MOVEit Transfer and CVE-2023-4966 affecting Citrix NetScaler gateways, to establish initial network foothold.
+
+ATTACK CHAIN ANALYSIS:
+1. Initial Access & Exploitation:
+The threat actor probed target perimeters from source IP 194.26.29.112 targeting vulnerable NetScaler appliances (CVE-2023-4966). Concurrently, weaponized SQL injection requests were delivered against MOVEit Transfer servers, dropping the LEMURLOOT webshell (SHA256: fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9).
+
+2. Credential Harvesting & Defense Evasion:
+Following perimeter breach, the adversary conducted Adversary-in-the-Middle (AitM) phishing using the spoofed authentication domain update-microsoft-auth.com, directing victims to https://update-microsoft-auth.com/oauth2/v2.0/authorize. Credentials obtained were used to bypass MFA checks using technique T1078 (Valid Accounts). Internal credential dumping was executed using a customized Mimikatz utility (SHA256: 2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae) mapped to technique T1003.
+
+3. Command and Control (C2):
+Second-stage payloads were retrieved from cdn-azure-edge.net/payloads/beacon.bin, resolving to IP address 185.220.101.5. This server operated as an active Cobalt Strike 4.9 Team Server communicating via HTTPS on port 8443 (T1071). The beacon payload (SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855) was injected into svchost.exe memory (T1055).
+
+4. Lateral Movement & Data Exfiltration:
+The actor established RDP tunnels via internal jumpbox 45.142.166.11 (T1021). Archive files containing sensitive financial documentation were exfiltrated to endpoint https://telemetry-sync-service.info/upload/exfil.tar.gz hosted at 45.154.255.89 (T1041). In an ancillary infection vector, LockBit 3.0 ransomware (SHA256: 7b52009b64fd0a2a49e6d8a939753077792b0554cac5245bb5640f8b09c6ac56) was staged for data encryption (T1486).
+
+RECOMMENDED DEFENSIVE ACTIONS:
+- Block all ingress and egress network traffic to 185.220.101.5, 194.26.29.112, and 45.154.255.89.
+- Blacklist domains update-microsoft-auth.com and cdn-azure-edge.net on corporate DNS resolvers.
+- Scan file systems and SIEM logs for SHA256 hashes e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 and 2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae.
+- Patch MOVEit Transfer (CVE-2023-34362) and Citrix NetScaler (CVE-2023-4966) immediately.
+

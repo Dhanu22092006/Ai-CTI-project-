@@ -1,0 +1,99 @@
+[
+  {
+    "technique_id": "T1566",
+    "name": "Phishing",
+    "tactic": "Initial Access",
+    "description": "Adversaries may send phishing messages to gain access to victim systems via spearphishing attachments or malicious links.",
+    "url": "https://attack.mitre.org/techniques/T1566/",
+    "detection": "Monitor email gateway logs, analyze suspicious attachments, inspect macro execution."
+  },
+  {
+    "technique_id": "T1190",
+    "name": "Exploit Public-Facing Application",
+    "tactic": "Initial Access",
+    "description": "Adversaries may attempt to exploit vulnerabilities in Internet-facing software (e.g. MOVEit CVE-2023-34362, Citrix Bleed CVE-2023-4966).",
+    "url": "https://attack.mitre.org/techniques/T1190/",
+    "detection": "Inspect web application firewall (WAF) alerts, crash reports, abnormal process spawning from web servers."
+  },
+  {
+    "technique_id": "T1078",
+    "name": "Valid Accounts",
+    "tactic": "Defense Evasion",
+    "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, or Privilege Escalation.",
+    "url": "https://attack.mitre.org/techniques/T1078/",
+    "detection": "Correlate unexpected geolocations, multiple concurrent logins, and credential usage from external anonymizers."
+  },
+  {
+    "technique_id": "T1059",
+    "name": "Command and Scripting Interpreter",
+    "tactic": "Execution",
+    "description": "Adversaries may abuse command and script interpreters such as PowerShell, Bash, Python, or VBScript to execute commands.",
+    "url": "https://attack.mitre.org/techniques/T1059/",
+    "detection": "Enable PowerShell script block logging (Event ID 4104), command-line process auditing."
+  },
+  {
+    "technique_id": "T1055",
+    "name": "Process Injection",
+    "tactic": "Defense Evasion",
+    "description": "Adversaries may inject code into processes in order to evade process-based defenses as well as possibly elevate privileges.",
+    "url": "https://attack.mitre.org/techniques/T1055/",
+    "detection": "Monitor API calls like CreateRemoteThread, VirtualAllocEx, WriteProcessMemory via Sysmon Event ID 8."
+  },
+  {
+    "technique_id": "T1003",
+    "name": "OS Credential Dumping",
+    "tactic": "Credential Access",
+    "description": "Adversaries may dump credentials from the LSASS memory, SAM database, or NTDS.dit to obtain account logon secrets.",
+    "url": "https://attack.mitre.org/techniques/T1003/",
+    "detection": "Monitor access handles to lsass.exe process (Sysmon ID 10) and Mimikatz command artifacts."
+  },
+  {
+    "technique_id": "T1021",
+    "name": "Remote Services",
+    "tactic": "Lateral Movement",
+    "description": "Adversaries may use Valid Accounts to log into a service that is designed to accept remote connections, such as RDP, SSH, or SMB.",
+    "url": "https://attack.mitre.org/techniques/T1021/",
+    "detection": "Audit Event ID 4624 (Logon Type 10 for RDP, Type 3 for network logon) and abnormal internal traffic flows."
+  },
+  {
+    "technique_id": "T1071",
+    "name": "Application Layer Protocol",
+    "tactic": "Command and Control",
+    "description": "Adversaries may communicate using application layer protocols (HTTP/HTTPS, DNS, Cobalt Strike beacons) to blend in with network traffic.",
+    "url": "https://attack.mitre.org/techniques/T1071/",
+    "detection": "Analyze TLS certificate anomalies, regular beaconing periodicity, high-entropy DNS requests."
+  },
+  {
+    "technique_id": "T1041",
+    "name": "Exfiltration Over C2 Channel",
+    "tactic": "Exfiltration",
+    "description": "Adversaries may steal data by transferring it over an existing command and control channel rather than initiating separate outbound connections.",
+    "url": "https://attack.mitre.org/techniques/T1041/",
+    "detection": "Monitor outbound data transfer volumes, spikes in outbound traffic over HTTP/S channels."
+  },
+  {
+    "technique_id": "T1486",
+    "name": "Data Encrypted for Impact",
+    "tactic": "Impact",
+    "description": "Adversaries may encrypt data on target systems or attached network storage to interrupt availability to system and network resources.",
+    "url": "https://attack.mitre.org/techniques/T1486/",
+    "detection": "Detect rapid mass file modifications, file rename anomalies, creation of ransom notes."
+  },
+  {
+    "technique_id": "T1082",
+    "name": "System Information Discovery",
+    "tactic": "Discovery",
+    "description": "An adversary may attempt to get detailed information about the operating system and hardware, including version, patches, and architecture.",
+    "url": "https://attack.mitre.org/techniques/T1082/",
+    "detection": "Monitor command executions like systeminfo, hostname, uname -a."
+  },
+  {
+    "technique_id": "T1027",
+    "name": "Obfuscated Files or Information",
+    "tactic": "Defense Evasion",
+    "description": "Adversaries may attempt to make an executable or file difficult to discover or analyze by encrypting, encoding, or packing.",
+    "url": "https://attack.mitre.org/techniques/T1027/",
+    "detection": "Analyze file entropy, detection of known packers like UPX, base64 payload decoders."
+  }
+]
+
