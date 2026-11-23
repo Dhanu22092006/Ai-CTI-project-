@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-# CTI
-=======
+
 # AI-Powered Cyber Threat Intelligence (CTI) Correlation Platform
 
 **Tagline:** *Smarter Intelligence. Safer Tomorrow.*  
@@ -165,7 +163,6 @@ ai-powered-cti/
 
 ## 7. Demo Login Credentials
 
-The login page includes 1-click **Instant Hackathon Demo Login** buttons:
 
 | Role | Email | Password | Permissions |
 |---|---|---|---|
@@ -211,4 +208,4 @@ python -m pytest backend/tests -v
 - **Automated SIEM Push:** Future versions can push verified attack chains directly into Splunk, Microsoft Sentinel, and Elastic SIEM via automated Webhooks and TAXII 2.1 channels.
 - **Defense-Only Notice:** This system is engineered strictly for defensive cybersecurity triage and threat intelligence correlation. It does not perform offensive scanning or automated endpoint execution.
 
->>>>>>> 8bb49ae (new project)
+
