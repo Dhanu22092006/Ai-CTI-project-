@@ -49,11 +49,32 @@ def test_auth_login():
     assert "access_token" in data
     assert data["user"]["role"] == "admin"
 
-def test_demo_login():
-    response = client.post("/api/auth/demo-login?role=analyst")
-    assert response.status_code == 200
-    data = response.json()
-    assert "access_token" in data
+def test_passwordless_demo_login_endpoint_is_gone():
+    assert client.post("/api/auth/demo-login?role=admin").status_code in (404, 405)
+
+def test_wrong_password_rejected():
+    r = client.post("/api/auth/login", json={"email": "admin@cti.platform", "password": "nope-nope"})
+    assert r.status_code == 400
+
+def test_me_requires_authentication():
+    # previously an anonymous request was silently treated as the admin user
+    assert client.get("/api/auth/me").status_code == 401
+    assert client.get("/api/auth/me", headers={"Authorization": "Bearer garbage"}).status_code == 401
+
+def test_me_with_valid_token():
+    tok = client.post("/api/auth/login", json={"email": "analyst@cti.platform", "password": "Analyst123!"}).json()["access_token"]
+    r = client.get("/api/auth/me", headers={"Authorization": f"Bearer {tok}"})
+    assert r.status_code == 200 and r.json()["role"] == "analyst"
+
+def test_register_is_admin_only():
+    body = {"email": "new.user@example.com", "password": "Str0ng-Passw0rd!", "full_name": "N", "role": "admin"}
+    assert client.post("/api/auth/register", json=body).status_code == 401
+    analyst = client.post("/api/auth/login", json={"email": "analyst@cti.platform", "password": "Analyst123!"}).json()["access_token"]
+    assert client.post("/api/auth/register", json=body, headers={"Authorization": f"Bearer {analyst}"}).status_code == 403
+    admin = client.post("/api/auth/login", json={"email": "admin@cti.platform", "password": "Admin123!"}).json()["access_token"]
+    import uuid
+    r = client.post("/api/auth/register", json={**body, "email": f"created.{uuid.uuid4().hex[:8]}@example.com"}, headers={"Authorization": f"Bearer {admin}"})
+    assert r.status_code == 200
 
 def test_dashboard_summary():
     response = client.get("/api/dashboard/summary")

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {
-  MOCK_USER,
   MOCK_DASHBOARD_SUMMARY,
   MOCK_INDICATORS,
   MOCK_GRAPH,
@@ -64,16 +63,6 @@ api.interceptors.response.use(
     // If backend is unreachable (Vite proxy 502/503, Vercel, offline), serve mock data!
     const status = error.response?.status;
     if (!error.response || status === 404 || status === 500 || status === 502 || status === 503 || error.code === 'ERR_NETWORK' || error.code === 'ECONNREFUSED') {
-      if (url.includes('/auth/me') || url.includes('/auth/demo-login') || url.includes('/auth/login')) {
-        return Promise.resolve({
-          data: {
-            access_token: 'mock-jwt-token-for-demo',
-            token_type: 'bearer',
-            user: MOCK_USER
-          }
-        });
-      }
-
       if (url.includes('/dashboard/summary')) {
         return Promise.resolve({ data: MOCK_DASHBOARD_SUMMARY });
       }

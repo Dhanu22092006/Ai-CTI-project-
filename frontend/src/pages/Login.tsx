@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Lock, Mail, ArrowRight, Sparkles, AlertCircle } from 'lucide-react';
+import { Shield, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Login: React.FC = () => {
@@ -8,7 +8,7 @@ export const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, demoLogin } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -19,19 +19,7 @@ export const Login: React.FC = () => {
       await login(email, password);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Invalid email or password');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleQuickDemo = async (role: 'admin' | 'analyst' | 'viewer') => {
-    setLoading(true);
-    try {
-      await demoLogin(role);
-      navigate('/');
-    } catch (err) {
-      setError('Failed to log in with demo account');
+      setError(err.response?.data?.detail || err.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -109,39 +97,6 @@ export const Login: React.FC = () => {
             </button>
           </form>
 
-          {/* Quick Demo Access Buttons for Hackathon Judges */}
-          <div className="mt-8 pt-6 border-t border-slate-800">
-            <div className="text-[11px] font-mono text-slate-400 uppercase tracking-wider text-center mb-3 flex items-center justify-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Instant Hackathon Demo Login</span>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('admin')}
-                className="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-cyan-500/30 text-center transition"
-              >
-                <div className="text-[11px] font-bold text-cyan-400">ADMIN</div>
-                <div className="text-[9px] text-slate-400">Full Access</div>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('analyst')}
-                className="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-center transition"
-              >
-                <div className="text-[11px] font-bold text-blue-400">ANALYST</div>
-                <div className="text-[9px] text-slate-400">Triage & Graph</div>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('viewer')}
-                className="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-center transition"
-              >
-                <div className="text-[11px] font-bold text-emerald-400">VIEWER</div>
-                <div className="text-[9px] text-slate-400">Read-Only</div>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
